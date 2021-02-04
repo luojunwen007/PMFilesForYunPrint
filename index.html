@@ -1,0 +1,98 @@
+<!--author luojunwen-->
+<!--date 2021/2/4-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成文件脚本</title>
+    <!--  该脚本仅限于运行在IE浏览器中!!!-->
+    <!--  调用windows 的shell,但会有安全问题.-->
+    <!--  browseFolder.js-->
+    <!--  该文件定义了BrowseFolder()函数，它将提供一个文件夹选择对话框-->
+    <!--  以供用户实现对系统文件夹选择的功能-->
+    <!--  文件夹选择对话框起始目录由-->
+    <!--  Shell.BrowseForFolder(WINDOW_HANDLE, Message, OPTIONS, strPath)函数-->
+    <!--  的strPath参数设置-->
+    <!--  例如：0x11--我的电脑 -->
+    <!--    0 --桌面-->
+    <!--  "c:\\"--系统C盘-->
+    <!--  用如下代码把该函数应用到一个HTML文件中：-->
+    <!--   <script src="browseFolder.js"></script>-->
+    <!--  或把下面代码直接COPY到<script language="javascript">...</script>标签中；-->
+    <!--  特别注意的是,由于安全方面的问题,你还需要如下设置才能使本JS代码正确运行,-->
+    <!--  否者会出现"没有权限"的问题.-->
+    <!--  1、设置可信任站点（例如本地的可以为：http://localhost）-->
+    <!--  2、其次：可信任站点安全级别自定义设置中：设置下面的选项-->
+    <!--  "对没有标记为安全的ActiveX控件进行初始化和脚本运行"----"启用" -->
+    <script>
+function browseFolder() {
+    try {
+        var Message = "请选择路径";  //选择框提示信息
+        var Shell = new ActiveXObject("Shell.Application");
+        var Folder = Shell.BrowseForFolder(0, Message, 64, 17);//起始目录为：我的电脑
+        if (Folder != null)
+        {
+            Folder = Folder.items();  // 返回 FolderItems 对象
+            Folder = Folder.item();  // 返回 Folderitem 对象
+            Folder = Folder.Path;   // 返回路径
+            if (Folder.charAt(Folder.length - 1) != "\\")
+            {
+                Folder = Folder + "\\";
+            }
+            document.all.savePath.value=Folder;
+            return Folder;
+        }
+      }
+      catch (e)
+     {
+        alert(e.message);
+     }
+}
+</script>
+</head>
+<body>
+<div>
+    <fieldset style="width:800px; height:200px; margin: 0 auto; margin-top: 150px; border: 1px solid">
+        <legend>设置生成文件</legend>
+        <form action="#">
+            <input id="Button1" type="button" value="选择路径" onclick="javascript:browseFolder()"/>
+            <input id="show" type="text" name="savePath"/>
+            <label>选择数量:</label>
+            <select>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label>选择文件名称:</label>
+            <select>
+                <option value="testdoc">testdoc</option>
+                <option value="testdocx">testdocx</option>
+                <option value="testxls">testxls</option>
+                <option value="testxlsx">testxlsx</option>
+                <option value="testppt">testppt</option>
+                <option value="testpptx">testpptx</option>
+                <option value="testtxt">testtxt</option>
+                <option value="testpdf">testpdf</option>
+                <option value="testpic">testpic</option>
+            </select>
+            <label>选择文件格式:</label>
+            <select>
+                <option value=".doc">.doc</option>
+                <option value=".docx">.docx</option>
+                <option value=".xls">.xls</option>
+                <option value=".xlsx">.xlsx</option>
+                <option value=".ppt">.ppt</option>
+                <option value=".pptx">.pptx</option>
+                <option value=".txt">.txt</option>
+                <option value=".pdf">.pdf</option>
+                <option value=".jpg">.jpg</option>
+            </select>
+            <input type="submit" value="一键生成"/>
+        </form>
+    </fieldset>
+</div>
+</body>
+</html>
+
+
